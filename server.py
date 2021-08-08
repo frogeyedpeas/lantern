@@ -1,14 +1,15 @@
-from flask import Flask, render_template, send_from_directory, Response
+from flask import Flask, render_template, send_from_directory, Response, request
 # from flask_socketio import SocketIO
 from pathlib import Path
 from capture import capture_and_save
 from camera import Camera
 import argparse, logging, logging.config, conf
+import l298n_dc
 
 logging.config.dictConfig(conf.dictConfig)
 logger = logging.getLogger(__name__)
 
-camera = Camera()
+camera = Camera(fps=40)
 camera.run()
 
 app = Flask(__name__)
@@ -60,13 +61,33 @@ def gen(camera):
 
 @app.route("/stream")
 def stream_page():
-	logger.debug("Requested stream page")
-	return render_template("stream.html")
+        print(request)
+        print("stream page called")
+        logger.debug("Requested stream page")
+        if "start_motor" in request.form:
+                print("starting motor now")
+
+        if "stop_motor" in request.form:
+                print("stopping motor now")
+
+        return render_template("stream.html")
 
 @app.route("/video_feed")
 def video_feed():
 	return Response(gen(camera),
 		mimetype="multipart/x-mixed-replace; boundary=frame")
+
+@app.route("/start")
+def start_motor():
+        l298n_dc.motor_go(l298n_dc.in1, l298n_dc.in2, True)
+        response = "starting"
+        return response, 200, {'Content-Type': 'text/plain'}
+
+@app.route("/stop")
+def stop_motor():
+        l298n_dc.motor_stop(l298n_dc.in1, l298n_dc.in2)
+        response = "stopping" 
+        return response, 200, {'Content-Type': 'text/plain'}
 
 if __name__=="__main__":
 	# socketio.run(app,host="0.0.0.0",port="3005",threaded=True)
