@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link rel="stylesheet" href="{{ url_for('static', filename='listree/dist/listree.min.css') }}"/>
+		<script src="{{ url_for('static', filename='listree/dist/listree.umd.min.js') }}"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+		<ul class="listree">
+  			<li>
+    				<div class="listree-submenu-heading">Uniqlo</div>
+    				<ul class="listree-submenu-items">
+      					<li>
+        					<div class="listree-submenu-heading">Mens</div>
+          					<ul class="listree-submenu-items">
+            						<li>
+              							<div class="listree-submenu-heading">Shirts</div>
+                						<ul class="listree-submenu-items">
+                  							<li>
+                    								<div class="listree-submenu-heading">White Oxford Shirt</div>
+                      								<ul class="listree-submenu-items">
+                      									<li>
+                        									<a href="">Item 1-1-1-1-1</a>
+                      									</li>
+                      									<li>
+                        									<a href="">Item 1-1-1-1-2</a>
+                      									</li>
+                      								</ul>
+                  							</li>
+                						</ul>
+            						</li>
+          					</ul>
+						<div class="listree-subemnu-heading">Womens</div>
+						<ul class="listree-submenu-items">
+						</ul>
+      					</li>
+    				</ul>
+  			</li>
+			<li>
+				<div class="listree-submenu-heading">Express </div>
+				<ul class="listtree-submenu-items">
+				</ul>
+			</li>
+
+		</ul>
+
+	<script> listree(); </script>
+	</body>
+</html>
