@@ -48,47 +48,75 @@ class mecanum:
         self.motor_back_left = motor_back_left
         self.motor_back_right = motor_back_right
 
-    def forward(self):
-        self.motor_front_left.motor_start(True)
-        self.motor_front_right.motor_start(True)
-        self.motor_back_left.motor_start(True)
-        self.motor_back_right.motor_start(True)
+    def __vertical__(self, direction: bool):
+        self.motor_front_left.motor_start(direction)
+        self.motor_front_right.motor_start(direction)
+        self.motor_back_left.motor_start(direction)
+        self.motor_back_right.motor_start(direction)
 
-    def backward(self):
-        self.motor_front_left.motor_start(False)
-        self.motor_front_right.motor_start(False)
-        self.motor_back_left.motor_start(False)
-        self.motor_back_right.motor_start(False)
+    def __sideward__(self, direction: bool):
+        self.motor_front_left.motor_start(direction)
+        self.motor_front_right.motor_start(not direction)
+        self.motor_back_left.motor_start(not direction)
+        self.motor_back_right.motor_start(direction)
 
-    def leftward(self):
-        self.motor_front_left.motor_start(False)
-        self.motor_back_left.motor_start(True)
-        self.motor_front_right.motor_start(True)
-        self.motor_back_right.motor_start(False)
-
-    def rightward(self):
-        
-        self.motor_front_left.motor_start(True)
-        self.motor_back_left.motor_start(False)
-        self.motor_front_right.motor_start(False)
-        self.motor_back_right.motor_start(True)
-
-
-    def base_rotation(self, direction: bool):
+    def __base_rotation__(self, direction: bool):
 
         self.motor_front_left.motor_start(direction)
         self.motor_front_right.motor_start(not direction)
         self.motor_back_right.motor_start(not direction)
         self.motor_back_left.motor_start(direction)
+    
+    def __diagonal_left__ (self, direction: bool):
+        self.motor_front_left.motor_stop()
+        self.motor_front_right.motor_start(direction)
+        self.motor_back_left.motor_start(direction)
+        self.motor_back_right.motor_stop()
+       
 
+    def __diagonal_right__(self, direction: bool):
+        self.motor_front_left.motor_start(direction)
+        self.motor_front_right.motor_stop()
+        self.motor_back_left.motor_stop()
+        self.motor_back_right.motor_start(direction)
+        
+
+    def stop():
+        self.motor_front_left.motor_stop()
+        self.motor_front_right.motor_stop()
+        self.motor_back_left.motor_stop()
+        self.motor_back_right.motor_stop()
+
+    def forward(self):
+        self.__vertical__(True)
+
+    def backward(self):
+        self.__vertical__(False)
+
+    def leftward(self):
+        self.__sideward__(False)
+
+    def rightward(self):
+        self.__sideward__(True)
 
     def rotate_left(self):
-        self.base_rotation(False)
+        self.__base_rotation__(False)
 
     def rotate_right(self):
-        self.base_rotation(True)
+        self.__base_rotation__(True)
 
-    #TODO DIAGONALS 
+    def diagonal_left_forward(self):
+        self.__diagonal_left__(True)
+
+    def diagonal_right_backward(self):
+        self.__diagonal_left__(False)
+
+    def diagonal_right_forward(self):
+        self.__diagonal_right__(True)
+
+    def diagonal_right_backward(self):
+        self.__diagonal_right__(True)
+
 
     
 
