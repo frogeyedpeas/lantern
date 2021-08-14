@@ -17,6 +17,12 @@ app = Flask(__name__)
 # app.config["SECRET_KEY"] = "secret!"
 # socketio = SocketIO(app)
 
+TOP_LEFT_MOTOR = dc_motor.dc_motor(EN1, PIN1, PIN2) 
+TOP_RIGHT_MOTOR = dc_motor.dc_motor(EN2, PIN3, PIN4)
+BACK_LEFT_MOTOR = dc_motor.dc_motor(EN3, PIN5, PIN6)
+BACK_RIGHT_MOTOR = dc_motor.dc_motor(EN4, PIN7, PIN8) 
+
+MECANUM_PLATFORM = dc_motor.mecanum(TOP_LEFT_MOTOR, TOP_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR) 
 
 
 @app.after_request

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+		<script>
+			var map = {}; // You could also use an array
+			onkeydown = onkeyup = function(e){
+    			e = e || event; // to deal with IE
+    			map[e.keyCode] = e.type == 'keydown';
+    			/* insert conditional here */
+			processKeys(map)
+			}
+
+			function processKeys(key_map) {
+				const LEFT = 37;
+				const UP = 38;
+				const RIGHT = 39;
+				const DOWN = 40;
+				const A = 65;
+				const D = 68;
+
+				// optimization, keep track if 2 or more keys are pressed in opposit directions as one variable
+				// if all of them pass then you can branch on it 
+
+				var norotate = !key_map[A] && !key_map[D]
+			
+				if (key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && norotate){
+
+					console.log("moving left");
+				}
+
+			
+				else if (key_map[LEFT] && !key_map[RIGHT] && key_map[UP] && !key_map[DOWN] && norotate) {
+
+					console.log("moving diagonally left foward");
+				}
+
+		
+				else if (key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && key_map[DOWN] && norotate) {
+
+					console.log("moving diagonally left backward");
+
+				}
+
+
+				else if (!key_map[LEFT] && key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && norotate) {
+
+					console.log("moving right");
+				}
+
+		
+				else if (!key_map[LEFT] && key_map[RIGHT] && key_map[UP] && !key_map[DOWN] && norotate) {
+					console.log("moving diagonally right and forward");
+				}
+
+				else if (!key_map[LEFT] && key_map[RIGHT] && !key_map[UP] && key_map[DOWN] && norotate) {
+					console.log("moving diagonally right and backwards");
+				}
+
+				else if (!key_map[LEFT] && !key_map[RIGHT] && key_map[UP] && !key_map[DOWN] && norotate) {
+
+					console.log("moving forward");
+				}
+
+				else if (!key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && key_map[DOWN] && norotate) {
+					console.log("moving backward");
+				}
+
+
+				else if (!key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && key_map[A] && !key_map[D]) { 
+					console.log("rotating to the left");
+				}
+
+				else if (!key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && !key_map[A]  && key_map[D]) {
+					console.log("rotating to the right");
+				}
+
+			}
+
+			
+
+			
+		</script>
+	</body>
+</html>
