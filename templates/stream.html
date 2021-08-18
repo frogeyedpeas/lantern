@@ -7,27 +7,114 @@
 	
         <img src="{{ url_for('video_feed') }}">
 
-	<button class="command start" value="start"> Start </button>
-	<button class="command stop" value="stop"> Stop </button>
-
+	
 	<script>
-		addEventListener("DOMContentLoaded", function() {
-			var commandButtons = document.querySelectorAll(".command");
-			for (var i=0, l=commandButtons.length; i<l; i++) {
-				var button = commandButtons[i];
-				button.addEventListener("click", function(e) {
-					e.preventDefault();
-					var clickedButton = e.target;
-					var command = clickedButton.value;
-
-					var request = new XMLHttpRequest();
-					
-					request.open("GET", "/"+command, true);
-					request.send();
-				});
+		
+		
+		        var map = {}; // You could also use an array
+                        //direction structure can be used later to improve the UX on double key commands 
+                        var direction_structure = {forward: 0, backward: 0, leftward: 0, rightward: 0, left_forward:0, right_forward: 0, left_backward: 0, right_backward: 0, left_rotate: 0, right_rotate: 0};
+			onkeydown = onkeyup = function(e){
+    			    e = e || event; // to deal with IE
+    			    map[e.keyCode] = e.type == 'keydown';
+    			    /* insert conditional here */
+			    processKeys(map, direction_structure)
 			}
 
-		});
+			function processKeys(key_map, dir_struct) {
+				const LEFT = 37;
+				const UP = 38;
+				const RIGHT = 39;
+				const DOWN = 40;
+				const A = 65;
+				const D = 68;
+				
+				var request = new XMLHttpRequest();
+
+				// optimization, keep track if 2 or more keys are pressed in opposit directions as one variable
+				// if all of them pass then you can branch on it 
+
+				var norotate = !key_map[A] && !key_map[D]
+			
+				if (key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && norotate){
+
+					console.log("moving left");
+					request.open("GET", "/motion/leftward/"+ str(Date.now()), true);
+					request.send();
+				}
+
+			
+				else if (key_map[LEFT] && !key_map[RIGHT] && key_map[UP] && !key_map[DOWN] && norotate) {
+
+					console.log("moving diagonally left forward");
+					request.open("GET", "/motion/diagonal_left_forward", true);
+					request.send();
+				}
+
+		
+				else if (key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && key_map[DOWN] && norotate) {
+
+					console.log("moving diagonally left backward");
+					request.open("GET", "/motion/diagonal_left_backward", true);
+					request.send();
+
+				}
+
+
+				else if (!key_map[LEFT] && key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && norotate) {
+
+					console.log("moving right");
+					request.open("GET", "/motion/rightward", true);
+					request.send();
+				}
+
+		
+				else if (!key_map[LEFT] && key_map[RIGHT] && key_map[UP] && !key_map[DOWN] && norotate) {
+					console.log("moving diagonally right and forward");
+					request.open("GET", "/motion/diagonal_right_forward", true);
+					request.send();
+				}
+
+				else if (!key_map[LEFT] && key_map[RIGHT] && !key_map[UP] && key_map[DOWN] && norotate) {
+					console.log("moving diagonally right and backwards");
+					request.open("GET", "/motion/diagonal_right_backward", true);
+					request.send();
+				}
+
+				else if (!key_map[LEFT] && !key_map[RIGHT] && key_map[UP] && !key_map[DOWN] && norotate) {
+
+					console.log("moving forward");
+					request.open("GET", "/motion/forward/" + Date.now().toString(), true);
+					request.send();
+				}
+
+				else if (!key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && key_map[DOWN] && norotate) {
+					console.log("moving backward");
+					request.open("GET", "/motion/backward", true);
+					request.send();
+				}
+
+
+				else if (!key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && key_map[A] && !key_map[D]) { 
+					console.log("rotating to the left");
+					request.open("GET", "/motion/rotate_left", true);
+					request.send();
+				}
+
+				else if (!key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && !key_map[A]  && key_map[D]) {
+					console.log("rotating to the right");
+					request.open("GET", "/motion/rotate_right", true);
+					request.send();
+				}
+				
+				else {
+					console.log("unidentified key combination, stopping");
+					request.open("GET", "/motion/stop", true)
+					request.send();
+				}
+
+			}
+
 	</script>
     </body>
 </html>

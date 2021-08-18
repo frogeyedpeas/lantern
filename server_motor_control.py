@@ -4,8 +4,8 @@ from pathlib import Path
 from capture import capture_and_save
 from camera import Camera
 import argparse, logging, logging.config, conf
-import l298n_dc
 import dc_motor 
+import time 
 
 logging.config.dictConfig(conf.dictConfig)
 logger = logging.getLogger(__name__)
@@ -17,12 +17,14 @@ app = Flask(__name__)
 # app.config["SECRET_KEY"] = "secret!"
 # socketio = SocketIO(app)
 
-TOP_LEFT_MOTOR = dc_motor.dc_motor(EN1, PIN1, PIN2) 
-TOP_RIGHT_MOTOR = dc_motor.dc_motor(EN2, PIN3, PIN4)
-BACK_LEFT_MOTOR = dc_motor.dc_motor(EN3, PIN5, PIN6)
-BACK_RIGHT_MOTOR = dc_motor.dc_motor(EN4, PIN7, PIN8) 
 
-MECANUM_PLATFORM = dc_motor.mecanum(TOP_LEFT_MOTOR, TOP_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR) 
+
+FRONT_LEFT_MOTOR = dc_motor.dc_motor(2,3,4)
+BACK_LEFT_MOTOR = dc_motor.dc_motor(14,18,15)
+FRONT_RIGHT_MOTOR = dc_motor.dc_motor(17,27,22)
+BACK_RIGHT_MOTOR = dc_motor.dc_motor(10,11,9)
+
+MECANUM_PLATFORM = dc_motor.mecanum(FRONT_LEFT_MOTOR, FRONT_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR, 0.25) #all motor commands last a 1/100 seconds  
 
 
 @app.after_request
@@ -70,33 +72,33 @@ def gen(camera):
 
 @app.route("/stream")
 def stream_page():
-        print(request)
-        print("stream page called")
-        logger.debug("Requested stream page")
-        if "start_motor" in request.form:
-                print("starting motor now")
-
-        if "stop_motor" in request.form:
-                print("stopping motor now")
-
-        return render_template("stream.html")
+    print(request)
+    print("stream page called")
+    logger.debug("Requested stream page")
+    return render_template("stream.html")
 
 @app.route("/video_feed")
 def video_feed():
 	return Response(gen(camera),
 		mimetype="multipart/x-mixed-replace; boundary=frame")
 
-@app.route("/start")
-def start_motor():
-        l298n_dc.motor_go(l298n_dc.in1, l298n_dc.in2, True)
-        response = "starting"
-        return response, 200, {'Content-Type': 'text/plain'}
+@app.route("/motion/<motion_type>/<timestamp>")
+def start_motor(motion_type, timestamp):
+    current_time = time.time()
+    if current_time > int(timestamp) + 1000:
+        response = "Expired"
+        print("expired request")
+    #print("current Robot motion_type", MECANUM_PLATFORM.motion_type)
+    elif MECANUM_PLATFORM.motion_type == None:
+        MECANUM_PLATFORM.motion_type = motion_type
+        MECANUM_PLATFORM.evaluate_state()
+        response = motion_type
+    else:
+        print("request ignored")
+        response = "blocked, robot currently performing action"
+    
+    return response, 200, {'Content-Type': 'text/plain'}
 
-@app.route("/stop")
-def stop_motor():
-        l298n_dc.motor_stop(l298n_dc.in1, l298n_dc.in2)
-        response = "stopping" 
-        return response, 200, {'Content-Type': 'text/plain'}
 
 if __name__=="__main__":
 	# socketio.run(app,host="0.0.0.0",port="3005",threaded=True)
