@@ -159,8 +159,41 @@ if __name__ == '__main__':
 
     DRIVING_BASE.stop()
 
-    #FRONT_LEFT.motor_start(True)
-    #time.sleep(2)
-    #FRONT_LEFT.motor_stop()
 
     DRIVING_BASE.forward()
+
+    input("enter to continue, backward next: ")
+
+    DRIVING_BASE.backward()
+
+    input("enter to continue, leftware next: ")
+
+    DRIVING_BASE.leftward()
+
+    input("enter to continue, rightward next: ")
+
+    DRIVING_BASE.rightward()
+
+    input("enter to continue, diagonal left next: ")
+
+    DRIVING_BASE.diagonal_left_forward()
+
+    input("enter to continue, diagonal right next: ")
+
+    DRIVING_BASE.diagonal_right_forward()
+
+    input("enter to toncintue, digonal left backward nexT: ")
+
+    DRIVING_BASE.diagonal_left_backward()
+
+    input("enter to continue, diagonal right backward next: ")
+
+    DRIVING_BASE.diagonal_right_backward()
+
+    input("enter to continue, rotate left next: ")
+
+    DRIVING_BASE.rotate_left()
+
+    input("enter to continue, rotate right next: ")
+
+    DRIVING_BASE.rotate_right()

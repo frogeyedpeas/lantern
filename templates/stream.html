@@ -39,7 +39,7 @@
 				if (key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && norotate){
 
 					console.log("moving left");
-					request.open("GET", "/motion/leftward/"+ str(Date.now()), true);
+					request.open("GET", "/motion/leftward/"+ Date.now().toString(), true);
 					request.send();
 				}
 
@@ -47,7 +47,7 @@
 				else if (key_map[LEFT] && !key_map[RIGHT] && key_map[UP] && !key_map[DOWN] && norotate) {
 
 					console.log("moving diagonally left forward");
-					request.open("GET", "/motion/diagonal_left_forward", true);
+					request.open("GET", "/motion/diagonal_left_forward/" + Date.now().toString(), true);
 					request.send();
 				}
 
@@ -55,7 +55,7 @@
 				else if (key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && key_map[DOWN] && norotate) {
 
 					console.log("moving diagonally left backward");
-					request.open("GET", "/motion/diagonal_left_backward", true);
+					request.open("GET", "/motion/diagonal_left_backward/" + Date.now().toString(), true);
 					request.send();
 
 				}
@@ -64,20 +64,20 @@
 				else if (!key_map[LEFT] && key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && norotate) {
 
 					console.log("moving right");
-					request.open("GET", "/motion/rightward", true);
+					request.open("GET", "/motion/rightward/" + Date.now().toString(), true);
 					request.send();
 				}
 
 		
 				else if (!key_map[LEFT] && key_map[RIGHT] && key_map[UP] && !key_map[DOWN] && norotate) {
 					console.log("moving diagonally right and forward");
-					request.open("GET", "/motion/diagonal_right_forward", true);
+					request.open("GET", "/motion/diagonal_right_forward/" + Date.now().toString(), true);
 					request.send();
 				}
 
 				else if (!key_map[LEFT] && key_map[RIGHT] && !key_map[UP] && key_map[DOWN] && norotate) {
 					console.log("moving diagonally right and backwards");
-					request.open("GET", "/motion/diagonal_right_backward", true);
+					request.open("GET", "/motion/diagonal_right_backward/" + Date.now().toString(), true);
 					request.send();
 				}
 
@@ -90,26 +90,26 @@
 
 				else if (!key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && key_map[DOWN] && norotate) {
 					console.log("moving backward");
-					request.open("GET", "/motion/backward", true);
+					request.open("GET", "/motion/backward/" + Date.now().toString(), true);
 					request.send();
 				}
 
 
 				else if (!key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && key_map[A] && !key_map[D]) { 
 					console.log("rotating to the left");
-					request.open("GET", "/motion/rotate_left", true);
+					request.open("GET", "/motion/rotate_left/" + Date.now().toString(), true);
 					request.send();
 				}
 
 				else if (!key_map[LEFT] && !key_map[RIGHT] && !key_map[UP] && !key_map[DOWN] && !key_map[A]  && key_map[D]) {
 					console.log("rotating to the right");
-					request.open("GET", "/motion/rotate_right", true);
+					request.open("GET", "/motion/rotate_right/" + Date.now().toString(), true);
 					request.send();
 				}
 				
 				else {
 					console.log("unidentified key combination, stopping");
-					request.open("GET", "/motion/stop", true)
+					request.open("GET", "/motion/stop/" + Date.now().toString(), true)
 					request.send();
 				}
 

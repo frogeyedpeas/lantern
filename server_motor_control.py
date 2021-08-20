@@ -85,7 +85,7 @@ def video_feed():
 @app.route("/motion/<motion_type>/<timestamp>")
 def start_motor(motion_type, timestamp):
     current_time = time.time()
-    if current_time > int(timestamp) + 1000:
+    if current_time > int(timestamp) + 500:
         response = "Expired"
         print("expired request")
     #print("current Robot motion_type", MECANUM_PLATFORM.motion_type)
