@@ -6,7 +6,8 @@ from camera import Camera
 import argparse, logging, logging.config, conf
 import dc_motor 
 import time 
-
+from adafruit_servokit import ServoKit
+from armkit import ArmKit 
 logging.config.dictConfig(conf.dictConfig)
 logger = logging.getLogger(__name__)
 
@@ -19,12 +20,14 @@ app = Flask(__name__)
 
 
 
+#INITIALIZING REALITY 
 FRONT_LEFT_MOTOR = dc_motor.dc_motor(2,3,4)
 BACK_LEFT_MOTOR = dc_motor.dc_motor(14,18,15)
 FRONT_RIGHT_MOTOR = dc_motor.dc_motor(17,27,22)
 BACK_RIGHT_MOTOR = dc_motor.dc_motor(10,11,9)
+MECANUM_PLATFORM = dc_motor.mecanum(FRONT_LEFT_MOTOR, FRONT_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR, 0.25) #all motor commands last a 0.25  seconds
+#ArmKit = ArmKit()
 
-MECANUM_PLATFORM = dc_motor.mecanum(FRONT_LEFT_MOTOR, FRONT_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR, 0.25) #all motor commands last a 1/100 seconds  
 
 
 @app.after_request
@@ -84,6 +87,9 @@ def video_feed():
 
 @app.route("/motion/<motion_type>/<timestamp>")
 def start_motor(motion_type, timestamp):
+
+    #return "testing", 200, {'Content-Type': 'text/plain'} 
+
     current_time = time.time()
     if current_time > int(timestamp) + 500:
         response = "Expired"
@@ -99,6 +105,25 @@ def start_motor(motion_type, timestamp):
     
     return response, 200, {'Content-Type': 'text/plain'}
 
+@app.route("/manipulation/<component>/<amount>/<timestamp>")
+def start_servo(component, amount, timestamp):
+    print("method starts")
+    current_time = time.time()
+    response = "" 
+    if current_time > int(timestamp) + 500:
+        response = "Expired"
+        print("expired request")
+
+    elif ArmKit.MotionState == None:
+        ArmKit.MotionState = component
+        ArmKit.Amount = int(amount)
+        ArmKit.evaluate_state()
+        response = component
+    else:
+        print("request ignored")
+        response = "blocked, robot currently performing action"
+
+    return response, 200, {'Content-Type': 'text/plain'}
 
 if __name__=="__main__":
 	# socketio.run(app,host="0.0.0.0",port="3005",threaded=True)

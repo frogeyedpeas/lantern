@@ -28,6 +28,8 @@
 				const DOWN = 40;
 				const A = 65;
 				const D = 68;
+				const C = 67
+				const X = 88
 				
 				var request = new XMLHttpRequest();
 
@@ -105,6 +107,19 @@
 					console.log("rotating to the right");
 					request.open("GET", "/motion/rotate_right/" + Date.now().toString(), true);
 					request.send();
+				}
+
+				else if (!key_map[C] && key_map[X]) {
+					console.log("closing grabber");
+					request.open("GET", "/manipulation/grabber_change/-5/" + Date.now().toString(), true);
+					request.send();
+				}
+
+				else if (key_map[C] && !key_map[X]) {
+					console.log("opening grabber");
+					request.open("GET", "/manipulation/grabber_change/5/" + Date.now().toString(), true);
+					request.send();
+
 				}
 				
 				else {
