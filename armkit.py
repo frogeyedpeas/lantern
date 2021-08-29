@@ -22,6 +22,28 @@ class ArmKit:
         else:
             self.Grabber.angle += angle 
 
+    def wrist_rotate(self, angle):
+        if self.WristRotater.angle + angle >= 90:
+            self.WristRotater.angle = 90
+
+        elif self.WristRotater.angle + angle <= 0:
+            self.WristRotater.angle = 0
+
+        else:
+            self.WristRotater.angle += angle
+
+
+    def wrist_flexion(self, angle):
+        if self.WristAngle.angle + angle <= 90:
+            self.WristAngle.angle = 90
+
+        elif self.WristAngle.angle + angle <= 0:
+            self.WristAngle.angle=0
+
+        else:
+            self.WristAngle.angle += angle 
+
+
     def evaluate_state(self):
         if self.MotionState != None and self.MotionState != "BLOCKED":
             MotionState = self.MotionState

@@ -105,7 +105,7 @@ def start_motor(motion_type, timestamp):
     
     return response, 200, {'Content-Type': 'text/plain'}
 
-@app.route("/manipulation/<component>/<amount>/<timestamp>")
+@app.route("/manipulation/<component>/<int(signed=True):amount>/<timestamp>")
 def start_servo(component, amount, timestamp):
     print("method starts")
     current_time = time.time()
