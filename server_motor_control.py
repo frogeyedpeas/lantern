@@ -21,12 +21,12 @@ app = Flask(__name__)
 
 
 #INITIALIZING REALITY 
-FRONT_LEFT_MOTOR = dc_motor.dc_motor(2,3,4)
-BACK_LEFT_MOTOR = dc_motor.dc_motor(14,18,15)
-FRONT_RIGHT_MOTOR = dc_motor.dc_motor(17,27,22)
-BACK_RIGHT_MOTOR = dc_motor.dc_motor(10,11,9)
-MECANUM_PLATFORM = dc_motor.mecanum(FRONT_LEFT_MOTOR, FRONT_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR, 0.25) #all motor commands last a 0.25  seconds
-#ArmKit = ArmKit()
+#FRONT_LEFT_MOTOR = dc_motor.dc_motor(2,3,4)
+#BACK_LEFT_MOTOR = dc_motor.dc_motor(14,18,15)
+#FRONT_RIGHT_MOTOR = dc_motor.dc_motor(17,27,22)
+#BACK_RIGHT_MOTOR = dc_motor.dc_motor(10,11,9)
+#MECANUM_PLATFORM = dc_motor.mecanum(FRONT_LEFT_MOTOR, FRONT_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR, 0.25) #all motor commands last a 0.25  seconds
+ArmKit = ArmKit()
 
 
 
@@ -88,7 +88,7 @@ def video_feed():
 @app.route("/motion/<motion_type>/<timestamp>")
 def start_motor(motion_type, timestamp):
 
-    #return "testing", 200, {'Content-Type': 'text/plain'} 
+    return "testing", 200, {'Content-Type': 'text/plain'} 
 
     current_time = time.time()
     if current_time > int(timestamp) + 500:
@@ -117,6 +117,7 @@ def start_servo(component, amount, timestamp):
     elif ArmKit.MotionState == None:
         ArmKit.MotionState = component
         ArmKit.Amount = int(amount)
+        print(ArmKit.Amount)
         ArmKit.evaluate_state()
         response = component
     else:
