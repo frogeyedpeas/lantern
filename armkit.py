@@ -34,8 +34,8 @@ class ArmKit:
 
 
     def wrist_flexion(self, angle):
-        if self.WristAngle.angle + angle <= 90:
-            self.WristAngle.angle = 90
+        if self.WristAngle.angle + angle >= 180:
+            self.WristAngle.angle = 180 
 
         elif self.WristAngle.angle + angle <= 0:
             self.WristAngle.angle=0

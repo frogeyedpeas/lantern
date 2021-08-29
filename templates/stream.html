@@ -28,8 +28,16 @@
 				const DOWN = 40;
 				const A = 65;
 				const D = 68;
-				const C = 67
-				const X = 88
+
+				const Z = 90;
+				const X = 88;
+				const C = 67;
+				const V = 86;
+				const B = 66;
+				const N = 78; 
+
+				const W = 87; // [move arm up]
+				const S = 83; // [move it down] 
 				
 				var request = new XMLHttpRequest();
 
@@ -109,17 +117,41 @@
 					request.send();
 				}
 
-				else if (!key_map[C] && key_map[X]) {
+				else if (!key_map[Z] && key_map[X]) {
 					console.log("closing grabber");
 					request.open("GET", "/manipulation/grabber_change/-5/" + Date.now().toString(), true);
 					request.send();
 				}
 
-				else if (key_map[C] && !key_map[X]) {
+				else if (key_map[Z] && !key_map[X]) {
 					console.log("opening grabber");
 					request.open("GET", "/manipulation/grabber_change/5/" + Date.now().toString(), true);
 					request.send();
 
+				}
+
+				else if (!key_map[C] && key_map[V]) {
+					console.log("rotating hand negative");
+					request.open("GET", "/manipulation/wrist_rotate/-5/" + Date.now().toString(), true);
+					request.send();
+				}
+
+				else if (key_map[C] && !key_map[V]) {
+					console.log("rotating hand positive");
+					request.open("GET", "/manipulation/wrist_rotate/5/" + Date.now().toString(), true);
+					request.send();
+				}
+
+				else if (!key_map[B] && key_map[N]) {
+					console.log("flexing arm negative");
+					request.open("GET", "/manipulation/wrist_flexion/-5/" + Date.now().toString(), true);
+					request.send();
+				}
+
+				else if (key_map[B] && !key_map[N]) {
+					console.log("flexing arm positive");
+					request.open("GET", "/manipulation/wrist_flexion/5/" + Date.now().toString(), true);
+					request.send();
 				}
 				
 				else {
