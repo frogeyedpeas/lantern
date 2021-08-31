@@ -153,6 +153,18 @@
 					request.open("GET", "/manipulation/wrist_flexion/5/" + Date.now().toString(), true);
 					request.send();
 				}
+
+				else if (key_map[W] && !key_map[S]) {
+					console.log("lifting arm");
+					request.open("GET", "/motion/up/" + Date.now().toString(), true);
+					request.send()
+				}
+
+				else if (!key_map[W] && key_map[S]) {
+					console.log("lowering arm");
+					request.open("GET", "/motion/down/" + Date.now().toString(), true);
+					request.send()
+				}
 				
 				else {
 					console.log("unidentified key combination, stopping");

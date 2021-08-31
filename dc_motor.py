@@ -37,7 +37,22 @@ class dc_motor:
 
     def set_duty_cycle(self, duty_cycle: int):
         self.p.ChangeDutyCycle(duty_cycle)
+
+class arm_adjuster:
+    def __init__(self, motor, wait_time: int):
+        self.motor = motor 
+        self.wait_time = wait_time
+
+    def up(self):
+        self.motor.motor_start(True)
+        time.sleep(self.wait_time)
+        self.motor.motor_stop()
     
+    def down(self):
+        self.motor.motor_start(False)
+        time.sleep(self.wait_time)
+        self.motor.motor_stop()
+
 
 class mecanum:
     def __init__(self, motor_front_left, motor_front_right, motor_back_left, motor_back_right, wait_time: int):

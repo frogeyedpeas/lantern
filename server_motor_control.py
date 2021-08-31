@@ -7,7 +7,7 @@ import argparse, logging, logging.config, conf
 import dc_motor 
 import time 
 from adafruit_servokit import ServoKit
-from armkit import ArmKit 
+import armkit
 logging.config.dictConfig(conf.dictConfig)
 logger = logging.getLogger(__name__)
 
@@ -26,8 +26,9 @@ app = Flask(__name__)
 #FRONT_RIGHT_MOTOR = dc_motor.dc_motor(17,27,22)
 #BACK_RIGHT_MOTOR = dc_motor.dc_motor(10,11,9)
 #MECANUM_PLATFORM = dc_motor.mecanum(FRONT_LEFT_MOTOR, FRONT_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR, 0.25) #all motor commands last a 0.25  seconds
-ArmKit = ArmKit()
-
+ArmKit = armkit.ArmKit()
+arm_motor = dc_motor.dc_motor(14,18,15)
+arm_adjuster = dc_motor.arm_adjuster(arm_motor, 0.25)
 
 
 @app.after_request
@@ -87,6 +88,12 @@ def video_feed():
 
 @app.route("/motion/<motion_type>/<timestamp>")
 def start_motor(motion_type, timestamp):
+
+    if motion_type == "up":
+        arm_adjuster.up()
+
+    if motion_type == "down":
+        arm_adjuster.down()
 
     return "testing", 200, {'Content-Type': 'text/plain'} 
 

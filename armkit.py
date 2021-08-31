@@ -13,13 +13,15 @@ class ArmKit:
         #self.Grabber.angle = 10 #can be used to set the angle to a fixed angle  
 
     def grabber_change(self, angle):
-        if self.Grabber.angle + angle >= 180:
-            self.Grabber.angle = 180
+        print("grabber_change has been called")
+        if self.Grabber.angle + angle >= 90:
+            self.Grabber.angle = 90
 
         elif self.Grabber.angle + angle <= 0:
             self.Grabber.angle = 0
 
         else:
+            print("angle is being updated")
             self.Grabber.angle += angle 
 
     def wrist_rotate(self, angle):
