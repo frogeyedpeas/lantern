@@ -25,7 +25,7 @@ FRONT_LEFT_MOTOR = dc_motor.dc_motor(25,8,7)
 BACK_LEFT_MOTOR = dc_motor.dc_motor(17,27,22)
 FRONT_RIGHT_MOTOR = dc_motor.dc_motor(0,5,6)
 BACK_RIGHT_MOTOR = dc_motor.dc_motor(10,9,11)
-#MECANUM_PLATFORM = dc_motor.mecanum(FRONT_LEFT_MOTOR, FRONT_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR, 0.25) #all motor commands last a 0.25  seconds
+MECANUM_PLATFORM = dc_motor.mecanum(FRONT_LEFT_MOTOR, FRONT_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR, 0.25) #all motor commands last a 0.25  seconds
 ArmKit = armkit.ArmKit()
 arm_motor = dc_motor.dc_motor(14,18,15)
 arm_adjuster = dc_motor.arm_adjuster(arm_motor, 0.25)
@@ -95,8 +95,6 @@ def start_motor(motion_type, timestamp):
     if motion_type == "down":
         arm_adjuster.down()
 
-    return "testing", 200, {'Content-Type': 'text/plain'} 
-
     current_time = time.time()
     if current_time > int(timestamp) + 500:
         response = "Expired"
@@ -134,11 +132,6 @@ def start_servo(component, amount, timestamp):
     return response, 200, {'Content-Type': 'text/plain'}
 
 if __name__=="__main__":
-    FRONT_LEFT_MOTOR.motor_start(True)
-    FRONT_RIGHT_MOTOR.motor_start(True)
-    time.sleep(10)
-    FRONT_LEFT_MOTOR.motor_stop()
-    FRONT_RIGHT_MOTOR.motor_stop()
 
 	# socketio.run(app,host="0.0.0.0",port="3005",threaded=True)
     parser = argparse.ArgumentParser()
