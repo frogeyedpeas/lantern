@@ -21,10 +21,10 @@ app = Flask(__name__)
 
 
 #INITIALIZING REALITY 
-#FRONT_LEFT_MOTOR = dc_motor.dc_motor(2,3,4)
-#BACK_LEFT_MOTOR = dc_motor.dc_motor(14,18,15)
-#FRONT_RIGHT_MOTOR = dc_motor.dc_motor(17,27,22)
-#BACK_RIGHT_MOTOR = dc_motor.dc_motor(10,11,9)
+FRONT_LEFT_MOTOR = dc_motor.dc_motor(25,8,7)
+BACK_LEFT_MOTOR = dc_motor.dc_motor(17,27,22)
+FRONT_RIGHT_MOTOR = dc_motor.dc_motor(0,5,6)
+BACK_RIGHT_MOTOR = dc_motor.dc_motor(10,9,11)
 #MECANUM_PLATFORM = dc_motor.mecanum(FRONT_LEFT_MOTOR, FRONT_RIGHT_MOTOR, BACK_LEFT_MOTOR, BACK_RIGHT_MOTOR, 0.25) #all motor commands last a 0.25  seconds
 ArmKit = armkit.ArmKit()
 arm_motor = dc_motor.dc_motor(14,18,15)
@@ -134,10 +134,16 @@ def start_servo(component, amount, timestamp):
     return response, 200, {'Content-Type': 'text/plain'}
 
 if __name__=="__main__":
+    FRONT_LEFT_MOTOR.motor_start(True)
+    FRONT_RIGHT_MOTOR.motor_start(True)
+    time.sleep(10)
+    FRONT_LEFT_MOTOR.motor_stop()
+    FRONT_RIGHT_MOTOR.motor_stop()
+
 	# socketio.run(app,host="0.0.0.0",port="3005",threaded=True)
-	parser = argparse.ArgumentParser()
-	parser.add_argument('-p','--port',type=int,default=5000, help="Running port")
-	parser.add_argument("-H","--host",type=str,default='0.0.0.0', help="Address to broadcast")
-	args = parser.parse_args()
-	logger.debug("Starting server")
-	app.run(host=args.host,port=args.port)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p','--port',type=int,default=5000, help="Running port")
+    parser.add_argument("-H","--host",type=str,default='0.0.0.0', help="Address to broadcast")
+    args = parser.parse_args()
+    logger.debug("Starting server")
+    app.run(host=args.host,port=args.port)
